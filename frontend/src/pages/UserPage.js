@@ -25,6 +25,7 @@ import {
   InputLabel,
   Select,
   Box,
+  TableHead,
 } from '@mui/material';
 import Label from '../components/label';
 import Iconify from '../components/iconify';
@@ -103,21 +104,27 @@ export default function UserPage() {
   const [userData, setUserData] = useState({});
 
   const token = localStorage.getItem('token');
+  const [users, setUsers] = useState([]);
+
   useEffect(() => {
-    // Make a GET request to your API endpoint
+    // Define your API endpoint URL
+    const apiUrl = 'http://192.168.3.231:4000/user/get-user';
     const headers = {
       Authorization: `Bearer ${token}`,
     };
-    axios.get('http://192.168.3.231:4000/user/get-user', { headers })
+
+    // Fetch user data from the API using Axios
+    axios
+      .get(apiUrl, { headers })
       .then((response) => {
-        // Set the user data from the API response
-        setUserData(response.data);
-        console.log(userData)
+        // Set the retrieved user data to the "users" state
+        setUsers(response.data);
       })
       .catch((error) => {
         console.error('Error fetching user data:', error);
       });
-  }, [setUserData]);
+  }, []);
+
 
 
   const closeTeacherForm = () => {
@@ -299,104 +306,30 @@ export default function UserPage() {
           onFilterName={handleFilterByName}
         />
 
-        {/* User Listing */}
-        <Card>
-          <Scrollbar>
-            <TableContainer sx={{ minWidth: 800 }}>
-              <Table>
-                <UserListHead
-                  order={order}
-                  orderBy={orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
-                  numSelected={selected.length}
-                  onRequestSort={handleRequestSort}
-                  onSelectAllClick={handleSelectAllClick}
-                />
-                <TableBody>
-                  {filteredUsers
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row) => {
-                      const { id, name, role, UserType, avatarUrl } = row;
-                      const selectedUser = selected.indexOf(name) !== -1;
-
-                      return (
-                        <TableRow
-                          hover
-                          key={id}
-                          tabIndex={-1}
-                          role="checkbox"
-                          selected={selectedUser}
-                        >
-                          <TableCell padding="checkbox">
-                            <Checkbox
-                              checked={selectedUser}
-                              onChange={(event) => handleClick(event, name)}
-                            />
-                          </TableCell>
-
-                          <TableCell component="th" scope="row" padding="none">
-                            <Stack
-                              direction="row"
-                              alignItems="center"
-                              spacing={2}
-                            >
-                              <Avatar alt={name} src={avatarUrl} />
-                              <Typography variant="subtitle2" noWrap>
-                                {name}
-                              </Typography>
-                            </Stack>
-                          </TableCell>
-
-                          <TableCell align="left">{UserType}</TableCell>
-
-                          <TableCell align="left">{role}</TableCell>
-
-                          <TableCell align="right">
-                            <IconButton
-                              size="large"
-                              color="inherit"
-                              onClick={handleOpenMenu}
-                            >
-                              <Iconify icon={'eva:more-vertical-fill'} />
-                            </IconButton>
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  {emptyRows > 0 && (
-                    <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Scrollbar>
-
-          {/* Table Pagination */}
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={USERLIST.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </Card>
-
         <div>
-          {userData ? (
-            <div>
-              <h2>User Profile</h2>
-              <p>Name: {userData.name}</p>
-              <p>Role: {userData.role}</p>
-              <p>Phone: {userData.phone}</p>
-            </div>
-          ) : (
-            <p>Loading user data...</p>
-          )}
+          <Typography variant="h4" gutterBottom>
+            List of Users
+          </Typography>
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Name</TableCell>
+                  <TableCell>Email</TableCell>
+                  <TableCell>Role</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {users.map((user) => (
+                  <TableRow key={user._id}>
+                    <TableCell>{user.name}</TableCell>
+                    <TableCell>{user.email}</TableCell>
+                    <TableCell>{user.role}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </div>
 
 
@@ -404,3 +337,4 @@ export default function UserPage() {
     </>
   );
 }
+
