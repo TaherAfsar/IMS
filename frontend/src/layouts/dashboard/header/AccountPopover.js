@@ -1,11 +1,8 @@
 import { useState } from 'react';
-// @mui
+import { useNavigate } from 'react-router-dom'; // Use useNavigate instead of useHistory
 import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
-// mocks_
 import account from '../../../_mock/account';
-
-// ----------------------------------------------------------------------
 
 const MENU_OPTIONS = [
   {
@@ -22,10 +19,12 @@ const MENU_OPTIONS = [
   },
 ];
 
-// ----------------------------------------------------------------------
-
 export default function AccountPopover() {
   const [open, setOpen] = useState(null);
+  const navigate = useNavigate(); // Use useNavigate instead of useHistory
+
+  // Use a state variable to track login status
+  const [isLoggedIn, setIsLoggedIn] = useState(Boolean(localStorage.getItem('token')));
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
@@ -33,6 +32,12 @@ export default function AccountPopover() {
 
   const handleClose = () => {
     setOpen(null);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setIsLoggedIn(false); // User is now logged out
+    navigate('/login');
   };
 
   return (
@@ -97,9 +102,16 @@ export default function AccountPopover() {
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        <MenuItem onClick={handleClose} sx={{ m: 1 }}>
-          Logout
-        </MenuItem>
+        {/* Conditionally render "Log in" or "Logout" based on login status */}
+        {isLoggedIn ? (
+          <MenuItem onClick={handleLogout} sx={{ m: 1 }}>
+            Logout
+          </MenuItem>
+        ) : (
+          <MenuItem onClick={() => navigate('/login')} sx={{ m: 1 }}>
+            Log in
+          </MenuItem>
+        )}
       </Popover>
     </>
   );
