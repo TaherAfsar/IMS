@@ -7,7 +7,7 @@ router.post("/admin/login", adminController.login);
 
 
 
-router.post("user/create-user", authMiddleware.verifyToken, userController.addUser)
+router.post("/user/create-user", authMiddleware.verifyToken, userController.addUser)
 
 
 
