@@ -2,8 +2,8 @@ const usersCollection = require('../db').collection('users')
 
 const md5 = require('md5')
 const { ObjectId } = require('mongodb')
-
-
+const bcrypt = require("bcryptjs")
+const nodemailer = require("nodemailer")
 let User = function (data) {
     this.data = data
     this.errors = []
@@ -26,6 +26,62 @@ User.prototype.cleanUp = function () {
 
 User.prototype.createUser = async function () {
     this.cleanUp()
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
+        auth: {
+            user: 'atharvalolzzz96@gmail.com',
+            pass: 'cpknpwooqdjulvop'
+        }
+    });
+
+    let details = {
+        from: "atharvalolzzz96@gmail.com",
+        to: this.data.email,
+        subject: "Your Credentials",
+        html: `<table style="max-width: 600px; margin: 0 auto; background-color: #fff; padding: 20px; border-radius: 5px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);">
+        <tr>
+            <td style="text-align: center;">
+                <h2>Welcome, ${this.data.name}!</h2>
+                <p>Your account has been created successfully. Your details are listed below:</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h3>Registration Details:</h3>
+                <ul style="list-style-type: none; padding: 0;">
+                    <li><strong>Name:</strong>${this.data.name} </li>
+                    <li><strong>Email:</strong>${this.data.email}</li>
+                    <li><strong>Branch:</strong>${this.data.branch}</li>
+                    <li><strong>Gender:</strong>${this.data.gender}</li>
+                    <li><strong>Phone:</strong>${this.data.phone}</li>
+                    <li><strong>Password:</strong>${this.data.password}</li>
+                  
+                    <li><strong>Role:</strong>${this.data.role}</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: center;">
+                <p>You are our special member. We welcome you</p>
+            </td>
+        </tr>
+    </table>`
+    }
+
+    console.log(details);
+
+
+    transporter.sendMail(details, (err) => {
+        if (err) {
+            console.log('Error in sending email', err);
+        } else {
+            console.log('Sent Mail Successfully');
+        }
+    })
+    this.data.password = await bcrypt.hash(this.data.password, 10)
     await usersCollection.insertOne(this.data)
 
 

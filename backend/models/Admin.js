@@ -91,4 +91,3 @@ Admin.prototype.getAdminById = async function(id){
 
 
 module.exports = Admin;
-
