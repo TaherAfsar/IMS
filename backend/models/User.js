@@ -30,6 +30,13 @@ User.prototype.createUser = async function () {
 
 
 }
+User.prototype.getUser = async function () {
+
+    let data = await usersCollection.find({}).toArray()
+    return data
+
+
+}
 
 
 module.exports = User;

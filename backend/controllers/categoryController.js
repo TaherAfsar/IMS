@@ -1,7 +1,7 @@
 
 const dotenv = require('dotenv')
 dotenv.config()
-const User = require("../models/User")
+const Category = require("../models/Category")
 const jwt = require("jsonwebtoken")
 // exports.login = function (req, res) {
 //     console.log(req.body)
@@ -10,7 +10,7 @@ const jwt = require("jsonwebtoken")
 
 //         let jwtSecretKey = process.env.JWT_SECRET_KEY;
 //         let data = {
-//             role: result.role,
+//             role: "admin",
 //             id: result._id,
 //         }
 
@@ -24,15 +24,9 @@ const jwt = require("jsonwebtoken")
 // }
 
 
-exports.addUser = async function (req, res) {
-    console.log(req.body);
-    let user = new User(req.body);
-    let data = await user.createUser()
-    res.status(201).json({ "message": "user added" });
-}
-
-exports.getUser = async function (req, res) {
-    let user = new User()
-    let data = await user.getUser()
-    res.json(data)
+exports.createCategory = async (req, res) => {
+    console.log(req.body)
+    let category = new Category(req.body)
+    await category.createCategory()
+    res.json({ message: "Category Created" })
 }
