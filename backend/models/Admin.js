@@ -13,7 +13,7 @@ let Admin = function (data) {
 Admin.prototype.cleanUp = function () {
     this.data = {
         email: this.data.email,
-        name : this.data.name,
+        name: this.data.name,
         mobileNo: this.data.mobileNo,
         password: this.data.password,
         designation: this.data.designation,
@@ -54,8 +54,8 @@ Admin.prototype.login = async function () {
     }
 };
 
-Admin.prototype.getAdminById = async function(id){
-    let data = adminsCollection.findOne({_id : new ObjectId(id)})
+Admin.prototype.getAdminById = async function (id) {
+    let data = adminsCollection.findOne({ _id: new ObjectId(id) })
     return data
 }
 
