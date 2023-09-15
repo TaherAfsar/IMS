@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
+import React, { useState } from 'react';
 import {
   Card,
   Table,
@@ -30,6 +30,12 @@ import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 import USERLIST from '../_mock/user';
+import TeacherForm from '../components/userTypeSelection/TeacherForm';
+import StaffForm from '../components/userTypeSelection/StaffForm';
+import ProcurerForm from "../components/userTypeSelection/ProcurerForm"
+
+
+
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
@@ -45,6 +51,7 @@ const edit = () => {
 const delet = () => {
   alert('I warned you already, Bye!');
 };
+
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -88,7 +95,20 @@ export default function UserPage() {
 
   const [userTypeSelection, setUserTypeSelection] = useState('');
   const [userTypePopover, setUserTypePopover] = useState(null);
+  const [isTeacherFormOpen, setIsTeacherFormOpen] = useState(false);
+  const [isStaffFormOpen, setIsStaffFormOpen] = useState(false);
+  const [isProcurerFormOpen, setIsProcurerFormOpen] = useState(false);
 
+
+  const closeTeacherForm = () => {
+    setIsTeacherFormOpen(false);
+  };
+  const closeStaffForm = () => {
+    setIsStaffFormOpen(false);
+  };
+  const closeProcurerForm = () => {
+    setIsProcurerFormOpen(false);
+  };
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
   };
@@ -168,14 +188,15 @@ export default function UserPage() {
     handleUserTypeSelectionClose();
   };
 
+
   const handleCreateUser = () => {
     // Handle user creation logic based on userTypeSelection here
     if (userTypeSelection === 'Teacher') {
-      alert('Creating a new Teacher.');
+      setIsTeacherFormOpen(true);
     } else if (userTypeSelection === 'Procurement Officer') {
-      alert('Creating a new Procurement Officer.');
+      setIsProcurerFormOpen(true)
     } else if (userTypeSelection === 'Staff Member') {
-      alert('Creating a new Staff Member.');
+      setIsStaffFormOpen(true);
     }
     setUserTypeSelection(''); // Clear the user type selection after creating a user
   };
@@ -242,7 +263,15 @@ export default function UserPage() {
             </Box>
           </Popover>
         </Stack>
-
+        {isTeacherFormOpen && (
+          <TeacherForm isOpen={isTeacherFormOpen} onClose={() => setIsTeacherFormOpen(false)} />
+        )}
+        {isStaffFormOpen && (
+          <StaffForm isOpen={isStaffFormOpen} onClose={() => setIsStaffFormOpen(false)} />
+        )}
+        {isProcurerFormOpen && (
+          <ProcurerForm isOpen={isProcurerFormOpen} onClose={() => setIsProcurerFormOpen(false)} />
+        )}
         {/* Search User */}
         <UserListToolbar
           numSelected={selected.length}
