@@ -19,6 +19,7 @@ import {
 import Iconify from '../../../components/iconify';
 import Scrollbar from '../../../components/scrollbar';
 import { ColorMultiPicker } from '../../../components/color-utils';
+import AddCategory from './AddCategory';
 
 // ----------------------------------------------------------------------
 
@@ -56,6 +57,15 @@ ShopFilterSidebar.propTypes = {
 };
 
 export default function ShopFilterSidebar({ openFilter, onOpenFilter, onCloseFilter }) {
+  const [isAddingCategory, setIsAddingCategory] = useState(false);
+  const handleAddCategory = () => {
+    setIsAddingCategory(true);
+  };
+
+  const handleCloseForm = () => {
+    setIsAddingCategory(false);
+  };
+
   return (
     <>
       <Button disableRipple color="inherit" endIcon={<Iconify icon="ic:round-filter-list" />} onClick={onOpenFilter}>
@@ -95,9 +105,12 @@ export default function ShopFilterSidebar({ openFilter, onOpenFilter, onCloseFil
             </div>
 
             <div>
-              <Typography variant="subtitle1" gutterBottom>
-                Category
-              </Typography>
+              <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ px: 1, py: 2 }}>
+                <Typography variant="subtitle1" gutterBottom>
+                  Category
+                </Typography>
+                <Button onClick={onCloseFilter}> +Add</Button>
+              </Stack>
               <RadioGroup>
                 {FILTER_CATEGORY_OPTIONS.map((item) => (
                   <FormControlLabel key={item} value={item} control={<Radio />} label={item} />
