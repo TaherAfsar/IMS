@@ -15,6 +15,7 @@ Report.prototype.cleanUp = function () {
         itemId: this.data.itemId,
         reportDetails: this.data.reportDetails,
         reportStatus: this.data.reportStatus,
+        reportImage: null,
         createdDate: new Date()
     }
 
@@ -23,6 +24,23 @@ Report.prototype.cleanUp = function () {
 
 Report.prototype.addReport = async function () {
     this.cleanUp()
+
+    if (!req.files || !req.files.reportImg) {
+        return res.status(400).send("No file uploaded.");
+    }
+
+    // Process the file upload
+    const uploadedImage = req.files.reportImg;
+    console.log(uploadedImage);
+    console.log(__dirname);
+    const filePath = __dirname + "../uploads/" + uploadedImage.name;
+    uploadedImage.mv(filePath, (err) => {
+        if (err) {
+            res.status(500).send(err);
+        }
+    });
+
+    this.data.reportImage = filePath;
     let data = await reportsCollection.insertOne(this.data)
     return true
 }
