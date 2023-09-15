@@ -2,7 +2,10 @@
 const dotenv = require('dotenv')
 dotenv.config()
 const User = require("../models/User")
+const Item = require("../models/Item")
 const jwt = require("jsonwebtoken")
+const Report = require("../models/Report")
+const Inventory = require('../models/Inventory')
 // exports.login = function (req, res) {
 //     console.log(req.body)
 //     let admin = new Admin(req.body)
@@ -42,6 +45,10 @@ exports.login = function (req, res) {
         console.log(e)
     })
 }
+User.prototype.getUserById = async function(id){
+    let data = await usersCollection.findOne({_id : new ObjectId(id)})
+    return data
+}
 
 exports.addUser = async function (req, res) {
     console.log(req.body);
@@ -74,8 +81,32 @@ exports.getStaffMembersList = async function(req, res){
     res.json(data)
 }
 
-exports.getUserById = async function(req, res){
+
+exports.reportItemForDamage = async function (req, res) {
     let user = new User()
-    let data = await user.getUserById(req.params.id)
-    res.json(data)
+    let itemId = req.params.itemId;
+
+    let item = new Item()
+    let itemData = await item.getItemById(itemId);
+    req.itemId = itemId;
+    let report = new Report(req.body)
+    let result = await report.addReport()
+
+    res.json({ "message": "OK" })
+
 }
+exports.requestInventory = async function (req, res) {
+    let user = new User()
+    let itemId = req.params.itemId;
+
+    let item = new Item()
+    let itemData = await item.getItemById(itemId);
+    req.itemId = itemId;
+    let inventory = new Inventory(req.body)
+    let result = await inventory.createInventoryRequest();
+
+
+    res.json({ "message": "OK" })
+
+}
+

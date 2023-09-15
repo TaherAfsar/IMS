@@ -12,12 +12,13 @@ let Item = function (data) {
 
 Item.prototype.cleanUp = function () {
     this.data = {
-        name : this.data.name, 
-        category : this.data.category, 
-        entryDate : this.data.entryDate, 
-        expirationDate : this.data.expirationDate, 
-        location : this.data.location, 
-        status : this.data.status,
+        name: this.data.name,
+        category: this.data.category,
+        entryDate: this.data.entryDate,
+        expirationDate: this.data.expirationDate,
+        location: this.data.location,
+
+        status: this.data.status,
     }
 
 }
@@ -37,14 +38,14 @@ Item.prototype.getAllItems = async function () {
 
 }
 
-Item.prototype.getItemById = async function(id) {
-    let item = await itemCollection.findOne({ _id : new ObjectId(id)})
-    return item 
+Item.prototype.getItemById = async function (id) {
+    let item = await itemCollection.findOne({ _id: new ObjectId(id) })
+    return item
 }
 
-Item.prototype.editItem = async function(id){
+Item.prototype.editItem = async function (id) {
     console.log(this.data)
-    let item = await itemCollection.findOneAndUpdate({ _id: new ObjectId(id) }, { $set: { name: this.data.name, category: this.data.category, entryData: this.data.entryData, expirationDate: this.data.expirationDate, location : this.data.location, status: this.data.status} })
+    let item = await itemCollection.findOneAndUpdate({ _id: new ObjectId(id) }, { $set: { name: this.data.name, category: this.data.category, entryData: this.data.entryData, expirationDate: this.data.expirationDate, location: this.data.location, status: this.data.status } })
     return item
 }
 module.exports = Item;
