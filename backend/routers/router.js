@@ -29,5 +29,5 @@ router.get("/category/view-category-list", authMiddleware.verifyToken, categoryC
 
 // Item router
 router.post("/item/add-item", authMiddleware.verifyToken, itemController.addItem)
-
+router.get("/item/get-all-Items", authMiddleware.verifyToken, itemController.getAllItems)
 module.exports = router

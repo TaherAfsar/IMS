@@ -17,7 +17,7 @@ Item.prototype.cleanUp = function () {
         entryDate : this.data.entryDate, 
         expirationDate : this.data.expirationDate, 
         location : this.data.location, 
-        status : this.status,
+        status : this.data.status,
     }
 
 }
@@ -28,6 +28,14 @@ Item.prototype.addItem = async function () {
 
 }
 
+
+Item.prototype.getAllItems = async function () {
+
+    let items = await itemCollection.find({}).toArray()
+
+    return items
+
+}
 
 module.exports = Item;
 
