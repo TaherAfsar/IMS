@@ -10,6 +10,7 @@ import Page404 from './pages/Page404';
 import InventoryPage from './pages/InventoryPage';
 import DashboardAppPage from './pages/DashboardAppPage';
 import AddItems from './pages/AddItems'
+import AddCategory from './pages/AddCategory';
 
 // ----------------------------------------------------------------------
 
@@ -45,6 +46,10 @@ export default function Router() {
     {
       path: 'addItems',
       element: <AddItems />
+    },
+    {
+      path: 'addCategory',
+      element: <AddCategory />
     }
   ]);
 

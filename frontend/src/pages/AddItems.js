@@ -6,6 +6,7 @@ import {
   makeStyles,
   Snackbar, // Import Snackbar component from MUI
 } from '@mui/material';
+import Nav from 'src/layouts/dashboard/nav/index';
 const today = new Date();
 const month = today.getMonth() + 1;
 const year = today.getFullYear();
@@ -17,6 +18,10 @@ function AddItems() {
   const inputStyle = {
     marginTop: "30px",
     width: "500px"
+  }
+  const form = {
+    marginLeft: "500px",
+    marginTop: "200px"
   }
   console.log(token)
   const [formData, setFormData] = useState({
@@ -62,8 +67,11 @@ function AddItems() {
 
   return (
     <div>
-
-      <form onSubmit={handleSubmit}>
+      < Nav />
+      <form onSubmit={handleSubmit} style={form}>
+        <h1>
+          Add Items
+        </h1>
         <div>
           <TextField
             style={inputStyle}
@@ -87,7 +95,7 @@ function AddItems() {
         <div>
           <TextField
             style={inputStyle}
-            label="expirationDate"
+            label=""
             name="expirationDate"
             variant="outlined"
             value={formData.expirationDate}

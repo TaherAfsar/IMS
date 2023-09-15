@@ -51,7 +51,7 @@ export default function DashboardAppPage() {
             <AppWidgetSummary title="Bug Reports" total={234} color="error" icon={'ant-design:bug-filled'} />
           </Grid>
 
-          <Grid item xs={12} md={6} lg={8}>
+          {/* <Grid item xs={12} md={6} lg={8}>
             <AppWebsiteVisits
               title="Website Visits"
               subheader="(+43%) than last year"
@@ -212,6 +212,7 @@ export default function DashboardAppPage() {
               ]}
             />
           </Grid>
+          */}
         </Grid>
       </Container>
     </>
