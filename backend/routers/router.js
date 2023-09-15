@@ -15,6 +15,14 @@ router.post("/user/create-user", authMiddleware.verifyToken, userController.addU
 router.get("/user/get-user", authMiddleware.verifyToken, userController.getUser)
 
 router.post("/category/create-category", authMiddleware.verifyToken, categoryController.createCategory)
+router.get("/category/get-categories", authMiddleware.verifyToken, categoryController.getCategories)
+router.post("/category/edit-categories", authMiddleware.verifyToken, categoryController.editCategories)
+router.get("/category/view-category-list", authMiddleware.verifyToken, categoryController.getAllCategories)
+
+
+
+
+// procurer
 // router.
 
 

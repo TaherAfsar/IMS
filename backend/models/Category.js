@@ -19,7 +19,7 @@ Category.prototype.cleanUp = function () {
         // password: this.data.password,
         // role: this.data.role,
         categoryType: this.data.categoryType,
-        categoryItems: [],
+        categoryItems: this.data.categoryItems,
         createdDate: new Date()
     }
 
@@ -29,6 +29,24 @@ Category.prototype.createCategory = async function () {
     this.cleanUp()
     await categoryCollection.insertOne(this.data)
 
+}
+Category.prototype.getCategories = async function () {
+
+    let categories = await categoryCollection.find({}).toArray()
+
+    return categories
+
+}
+Category.prototype.editCategories = async function (id) {
+    this.cleanUp()
+    let categories = await categoryCollection.findOneAndUpdate({ _id: new ObjectId() }, { $set: { categoryType: this.data.categoryType, categoryItems: this.data.categoryItems } })
+
+    return categories
+
+}
+Category.prototype.getAllCategories = async function (id) {
+    let data = await categoryCollection.find({}).toArray()
+    return data
 }
 // Category.prototype.createAdmin = async function () {
 //     this.cleanUp()
