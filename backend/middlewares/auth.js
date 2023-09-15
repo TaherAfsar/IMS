@@ -1,5 +1,29 @@
-exports.verifyToken = function (req, res, next) {
+const jwt = require("jsonwebtoken")
 
+
+exports.verifyToken = function (req, res, next) {
+    // Get the JWT token from the request headers or query parameters
+    const token = req.headers.authorization || req.query.token;
+
+    if (!token) {
+        return res.status(401).json({ message: 'Unauthorized' });
+    }
+    let jwtSecretKey = process.env.JWT_SECRET_KEY;
+    // Verify the token
+    jwt.verify(token, jwtSecretKey, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ message: 'Token verification failed' });
+        }
+
+        // Token is valid, and 'decoded' contains the payload
+        const { role, id } = decoded;
+
+        req.role = role;
+        req.id = id;
+
+    });
+
+    next();
 }
 
 exports.createToken = function (req, res, next) {
