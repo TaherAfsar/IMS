@@ -4,6 +4,7 @@ const adminController = require("../controllers/adminController")
 const authMiddleware = require("../middlewares/auth")
 const userController = require("../controllers/userController")
 const categoryController = require("../controllers/categoryController")
+const itemController = require("../controllers/itemController")
 router.post("/admin/login", adminController.login);
 
 
@@ -26,6 +27,12 @@ router.post("/category/edit-categories/:id", authMiddleware.verifyToken, categor
 router.get("/category/view-category-list", authMiddleware.verifyToken, categoryController.getAllCategories)
 
 
+//Items
+router.post("/item/add-item", authMiddleware.verifyToken, itemController.addItem)
+router.get("/item/get-allItems", authMiddleware.verifyToken, itemController.getAllItems)
+router.get("/item/get-itemById/:id", authMiddleware.verifyToken, itemController.getItemById)
+router.post("/item/editItem/:id", authMiddleware.verifyToken, itemController.editItem)
+
 
 
 //procurement
@@ -44,4 +51,50 @@ router.get("/metrics/getTotalProcuredItemCount/", adminController.getTotalProcur
 // router.get("")
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//mit space
 module.exports = router
