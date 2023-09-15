@@ -4,7 +4,7 @@ const MongoStore = require('connect-mongo')
 const flash = require('connect-flash')
 const router = require("./routers/router")
 // const fileUpload = require('express-fileupload')
-
+const cors = require("cors")
 const app = express()
 
 // const router = require('./router')
@@ -23,7 +23,7 @@ let sessionOptions = session({
 
 app.use(sessionOptions)
 app.use(flash())
-
+app.use(cors())
 
 app.use(express.static('public'))
 //We are telling our express server to make the folder accessible.

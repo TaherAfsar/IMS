@@ -31,6 +31,7 @@
     "html-pdf": "^3.0.1",
     "image-to-pdf": "^2.0.0",
     "jimp": "^0.22.4",
+    "jsonwebtoken": "^9.0.2",
     "md5": "^2.3.0",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.40",
