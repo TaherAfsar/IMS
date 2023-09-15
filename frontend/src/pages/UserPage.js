@@ -43,11 +43,11 @@ const TABLE_HEAD = [
 ];
 
 const edit = () => {
-  console.log("You are been warned!");
+  alert("ehehehheheheh")
 }
 
 const delet = () => {
-  console.log("I warned you already, Bye!");
+  alert("I warned you already, Bye!");
 }
 
 function descendingComparator(a, b, orderBy) {
