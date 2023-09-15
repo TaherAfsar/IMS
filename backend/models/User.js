@@ -37,7 +37,32 @@ User.prototype.getUser = async function () {
 
 
 }
+User.prototype.login = async function () {
+    try {
+        console.log(this.data.email);
+        this.cleanUp();
+        const attemptedUser = await usersCollection.findOne({ email: this.data.email });
 
+        console.log("Found! based on email");
+        console.log(attemptedUser);
+
+        if (attemptedUser && bcrypt.compareSync(this.data.password, attemptedUser.password)) {
+            this.data = attemptedUser;
+            console.log("This data");
+            console.log(this.data);
+
+            return attemptedUser;
+        } else {
+            console.log("Invalid");
+
+            throw "Invalid username / password.";
+        }
+    } catch (error) {
+        console.log("Failed");
+
+        throw "Please try again later.";
+    }
+};
 
 module.exports = User;
 

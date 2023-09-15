@@ -30,16 +30,16 @@ Category.prototype.createCategory = async function () {
     await categoryCollection.insertOne(this.data)
 
 }
-Category.prototype.getCategories = async function () {
+Category.prototype.getCategoryById = async function (id) {
 
-    let categories = await categoryCollection.find({}).toArray()
+    let category = await categoryCollection.find({ _id: new ObjectId(id) })
 
-    return categories
+    return category
 
 }
 Category.prototype.editCategories = async function (id) {
     this.cleanUp()
-    let categories = await categoryCollection.findOneAndUpdate({ _id: new ObjectId() }, { $set: { categoryType: this.data.categoryType, categoryItems: this.data.categoryItems } })
+    let categories = await categoryCollection.findOneAndUpdate({ _id: new ObjectId(id) }, { $set: { categoryType: this.data.categoryType, categoryItems: this.data.categoryItems } })
 
     return categories
 
