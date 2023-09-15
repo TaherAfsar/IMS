@@ -1,82 +1,143 @@
 import React, { useState } from 'react';
-
+import axios from 'axios';
+import {
+  TextField,
+  Button,
+  makeStyles,
+  Snackbar, // Import Snackbar component from MUI
+} from '@mui/material';
+const today = new Date();
+const month = today.getMonth() + 1;
+const year = today.getFullYear();
+const date = today.getDate();
+const currentDate = `${month} + "/" + ${date} + "/" + ${year}`;
+const token = localStorage.getItem('token');
+console.log(token)
 function AddItems() {
+  const inputStyle = {
+    marginTop: "30px",
+    width: "500px"
+  }
+  console.log(token)
   const [formData, setFormData] = useState({
-    id: '',
     name: '',
     category: '',
-    entryDate: '',
     expirationDate: '',
     location: '',
-    status: 'Broken', // Default value
+    status: '',
+    entryDate: currentDate,
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  const [responseMessage, setResponseMessage] = useState('');
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const handleChange = (event) => {
+    const { name, value } = event.target;
     setFormData({
       ...formData,
       [name]: value,
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // You can access all the form data in the 'formData' object
-    console.log(formData);
-    // Here, you can perform any further actions like sending the data to a server or updating the state in your app.
+  const handleSnackbarClose = () => {
+    setOpenSnackbar(false);
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      console.log(formData)
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      const response = await axios.post('http://192.168.3.231:4000/item/add-item', formData, { headers });
+      console.log(formData)
+      if (response.data.message === 'item added') {
+        setResponseMessage('Iytem added successfully');
+        setOpenSnackbar(true);
+      }
+    } catch (error) {
+      console.error('Error sending POST request:', error);
+    }
   };
 
   return (
     <div>
-      <h2>Add Item</h2>
+
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="id">ID:</label>
-          <input type="text" id="id" name="id" value={formData.id} onChange={handleChange} />
-        </div>
-        <div>
-          <label htmlFor="name">Name:</label>
-          <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} />
-        </div>
-        <div>
-          <label htmlFor="category">Category:</label>
-          <select id="category" name="category" value={formData.category} onChange={handleChange}>
-            <option value="Beverages">Beverages</option>
-            <option value="Food">Food</option>
-            <option value="Furniture">Furniture</option>
-            <option value="Hardware">Hardware</option>
-          </select>
-        </div>
-        <div>
-          <label htmlFor="entryDate">Entry Date:</label>
-          <input type="text" id="entryDate" name="entryDate" value={formData.entryDate} onChange={handleChange} />
-        </div>
-        <div>
-          <label htmlFor="expirationDate">Expiration Date:</label>
-          <input
-            type="text"
-            id="expirationDate"
-            name="expirationDate"
-            value={formData.expirationDate}
+          <TextField
+            style={inputStyle}
+            label="Name"
+            name="name"
+            variant="outlined"
+            value={formData.name}
             onChange={handleChange}
           />
         </div>
         <div>
-          <label htmlFor="location">Location:</label>
-          <input type="text" id="location" name="location" value={formData.location} onChange={handleChange} />
+          <TextField
+            style={inputStyle}
+            label="category"
+            name="category"
+            variant="outlined"
+            value={formData.category}
+            onChange={handleChange}
+          />
         </div>
         <div>
-          <label htmlFor="status">Status:</label>
-          <select id="status" name="status" value={formData.status} onChange={handleChange}>
-            <option value="Broken">Broken</option>
-            <option value="Fixing">Fixing</option>
-            <option value="Fixed">Fixed</option>
-          </select>
+          <TextField
+            style={inputStyle}
+            label="expirationDate"
+            name="expirationDate"
+            variant="outlined"
+            value={formData.expirationDate}
+            onChange={handleChange}
+            type='date'
+          />
         </div>
-        <button type="submit">Submit</button>
+        <div>
+          <TextField
+            style={inputStyle}
+            label="location"
+            name="location"
+            variant="outlined"
+            value={formData.location}
+            onChange={handleChange}
+          />
+        </div>
+        <div>
+          <TextField
+            style={inputStyle}
+            label="status"
+            name="status"
+            variant="outlined"
+            value={formData.status}
+            onChange={handleChange}
+          />
+        </div>
+
+        <Button
+          style={inputStyle}
+          type="submit"
+          variant="contained"
+          color="primary"
+        >
+          Submit
+        </Button>
+
+
       </form>
+
+      {/* Snackbar to display the response message */}
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000} // Adjust the duration as needed
+        onClose={handleSnackbarClose}
+        message={responseMessage}
+      />
     </div>
   );
 }
 
 export default AddItems;
+

@@ -1,7 +1,8 @@
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import {
   Card,
   Table,
@@ -98,6 +99,25 @@ export default function UserPage() {
   const [isTeacherFormOpen, setIsTeacherFormOpen] = useState(false);
   const [isStaffFormOpen, setIsStaffFormOpen] = useState(false);
   const [isProcurerFormOpen, setIsProcurerFormOpen] = useState(false);
+
+  const [userData, setUserData] = useState({});
+
+  const token = localStorage.getItem('token');
+  useEffect(() => {
+    // Make a GET request to your API endpoint
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    axios.get('http://192.168.3.231:4000/user/get-user', { headers })
+      .then((response) => {
+        // Set the user data from the API response
+        setUserData(response.data);
+        console.log(userData)
+      })
+      .catch((error) => {
+        console.error('Error fetching user data:', error);
+      });
+  }, [setUserData]);
 
 
   const closeTeacherForm = () => {
@@ -365,6 +385,21 @@ export default function UserPage() {
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
         </Card>
+
+        <div>
+          {userData ? (
+            <div>
+              <h2>User Profile</h2>
+              <p>Name: {userData.name}</p>
+              <p>Role: {userData.role}</p>
+              <p>Phone: {userData.phone}</p>
+            </div>
+          ) : (
+            <p>Loading user data...</p>
+          )}
+        </div>
+
+
       </Container>
     </>
   );

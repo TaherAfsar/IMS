@@ -9,6 +9,7 @@ import LoginPage from './pages/LoginPage';
 import Page404 from './pages/Page404';
 import InventoryPage from './pages/InventoryPage';
 import DashboardAppPage from './pages/DashboardAppPage';
+import AddItems from './pages/AddItems'
 
 // ----------------------------------------------------------------------
 
@@ -41,6 +42,10 @@ export default function Router() {
       path: '*',
       element: <Navigate to="/404" replace />,
     },
+    {
+      path: 'addItems',
+      element: <AddItems />
+    }
   ]);
 
   return routes;
