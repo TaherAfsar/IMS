@@ -8,22 +8,22 @@ const itemController = require("../controllers/itemController")
 router.post("/admin/login", adminController.login);
 
 
-
+// user 
+router.post("/user/login", userController.login);
 router.post("/user/create-user", authMiddleware.verifyToken, userController.addUser)
 // router.post("/user/edit-user", authMiddleware.verifyToken, userController.addUser)
 // router.post("/user/delete-user", authMiddleware.verifyToken, userController.addUser)
 router.get("/user/get-user", authMiddleware.verifyToken, userController.getUser)
-
+//categiry
 router.post("/category/create-category", authMiddleware.verifyToken, categoryController.createCategory)
-router.get("/category/get-categories", authMiddleware.verifyToken, categoryController.getCategories)
-router.post("/category/edit-categories", authMiddleware.verifyToken, categoryController.editCategories)
+router.get("/category/get-categories/:id", authMiddleware.verifyToken, categoryController.getCategoryById)
+router.post("/category/edit-categories/:id", authMiddleware.verifyToken, categoryController.editCategories)
 router.get("/category/view-category-list", authMiddleware.verifyToken, categoryController.getAllCategories)
 
 
 
 
-// procurer
-// router.
+
 
 
 
