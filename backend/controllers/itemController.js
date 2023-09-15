@@ -18,3 +18,15 @@ exports.getAllItems = async (req, res) => {
     let data = await item.getAllItems()
     res.json(data)
 }
+
+exports.getItemById = async (req, res) => {
+    let item = new Item()
+    let data = await item.getItemById(req.params.id)
+    res.json(data)
+}
+
+exports.editItem = async (req, res) => {
+    let item = new Item(req.body)
+    let data = await item.editItem(req.params.id)
+    res.json({ items: data, "message": "Category Edited Successfully" })
+}

@@ -22,3 +22,16 @@ exports.login = function (req, res) {
         console.log(e)
     })
 }
+
+
+exports.getAdminById = async function(req, res){
+    let admin = new Admin()
+    let data = admin.getAdminById(req.params.id)
+    res.json(data)
+}
+
+exports.createAdmin = async function(req, res){
+    let admin = new Admin(req.body)
+    let data = await admin.createAdmin()
+    res.json(data)
+}

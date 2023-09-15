@@ -31,7 +31,6 @@ User.prototype.createUser = async function () {
 
 }
 User.prototype.getUser = async function () {
-
     let data = await usersCollection.find({}).toArray()
     return data
 
@@ -63,6 +62,11 @@ User.prototype.login = async function () {
         throw "Please try again later.";
     }
 };
+
+User.prototype.getUserById = async function(id){
+    let data = await usersCollection.findOne({_id : new ObjectId(id)})
+    return data
+}
 
 module.exports = User;
 

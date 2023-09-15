@@ -55,3 +55,10 @@ exports.getUser = async function (req, res) {
     let data = await user.getUser()
     res.json(data)
 }
+
+
+exports.getUserById = async function(req, res){
+    let user = new User()
+    let data = await user.getUserById(req.params.id)
+    res.json(data)
+}
