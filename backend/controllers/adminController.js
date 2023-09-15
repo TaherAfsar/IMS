@@ -10,7 +10,7 @@ exports.login = function (req, res) {
 
         let jwtSecretKey = process.env.JWT_SECRET_KEY;
         let data = {
-            role: result.role,
+            role: "admin",
             id: result._id,
         }
 
