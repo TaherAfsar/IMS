@@ -36,6 +36,22 @@ User.prototype.getUser = async function () {
 
 
 }
+
+User.prototype.getProcurerList = async function(){
+    let data = await usersCollection.find({role : 'procurer'}).toArray()
+    return data
+}
+
+User.prototype.getTeacherList = async function(){
+    let data = await usersCollection.find({role: "teacher"}).toArray()
+    return data
+}
+
+User.prototype.getStaffMembersList = async function(){
+    let data = await usersCollection.find({role : "staffMember"}).toArray()
+    return data
+}
+
 User.prototype.login = async function () {
     try {
         console.log(this.data.email);

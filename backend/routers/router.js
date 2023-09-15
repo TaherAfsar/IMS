@@ -14,9 +14,12 @@ router.post("/user/create-user", authMiddleware.verifyToken, userController.addU
 // router.post("/user/edit-user", authMiddleware.verifyToken, userController.addUser)
 // router.post("/user/delete-user", authMiddleware.verifyToken, userController.addUser)
 router.get('/user/getUserById/:id', authMiddleware.verifyToken, userController.getUserById)
-
-
 router.get("/user/get-user", authMiddleware.verifyToken, userController.getUser)
+router.get("/user/get-procurerList", authMiddleware.verifyToken, userController.getProcurerList)
+router.get("/user/get-teacherList", authMiddleware.verifyToken, userController.getTeacherList)
+router.get("/user/get-staffMembersList", authMiddleware.verifyToken, userController.getStaffMembersList)
+
+
 //categiry
 router.post("/category/create-category", authMiddleware.verifyToken, categoryController.createCategory)
 router.get("/category/get-categories/:id", authMiddleware.verifyToken, categoryController.getCategoryById)

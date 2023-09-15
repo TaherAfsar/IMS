@@ -56,6 +56,23 @@ exports.getUser = async function (req, res) {
     res.json(data)
 }
 
+exports.getProcurerList = async function(req, res){
+    let user = new User()
+    let data = await user.getProcurerList()
+    res.json(data)
+}
+
+exports.getTeacherList = async function(req, res){
+    let user = new User()
+    let data = await user.getTeacherList()
+    res.json(data)
+}
+
+exports.getStaffMembersList = async function(req, res){
+    let user = new User()
+    let data = user.getStaffMembersList()
+    res.json(data)
+}
 
 exports.getUserById = async function(req, res){
     let user = new User()
