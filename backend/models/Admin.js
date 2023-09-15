@@ -12,45 +12,49 @@ let Admin = function (data) {
 
 Admin.prototype.cleanUp = function () {
     this.data = {
-
+        email: this.data.email,
+        firstName: this.data.firstName,
+        lastName: this.data.lastName,
+        mobileNo: this.data.mobileNo,
+        password: this.data.password,
+        role: this.data.role,
         createdDate: new Date()
     }
 
 }
 
 
-// Admin.prototype.createAdmin = async function () {
-//     this.cleanUp()
-//     await adminsCollection.insertOne(this.data)
-// }
+Admin.prototype.createAdmin = async function () {
+    this.cleanUp()
+    await adminsCollection.insertOne(this.data)
+}
 
-// Admin.prototype.login = function () {
-//     console.log(this.data.email)
-//     return new Promise((resolve, reject) => {
-//         this.cleanUp()
-//         adminsCollection.findOne({ email: this.data.email }).then((attemptedUser) => {
-//             console.log("Found! based on email")
-//             console.log(attemptedUser)
+Admin.prototype.login = async function () {
+    try {
+        console.log(this.data.email);
+        this.cleanUp();
+        const attemptedUser = await adminsCollection.findOne({ email: this.data.email });
+        console.log("Found! based on email");
+        console.log(attemptedUser);
 
-//             if (attemptedUser && bcrypt.compareSync(this.data.password, attemptedUser.password)) {
-//                 this.data = attemptedUser
-//                 console.log("This dataa")
-//                 console.log(this.data)
+        if (attemptedUser && bcrypt.compareSync(this.data.password, attemptedUser.password)) {
+            this.data = attemptedUser;
+            console.log("This data");
+            console.log(this.data);
 
-//                 resolve(this.data)
-//             } else {
-//                 console.log("Invalidd")
+            return this.data;
+        } else {
+            console.log("Invalid");
 
-//                 reject("Invalid username / password.")
-//             }
-//         }).catch(function () {
-//             console.log("Failed")
+            throw "Invalid username / password.";
+        }
+    } catch (error) {
+        console.log("Failed");
 
-//             reject("Please try again later.")
+        throw "Please try again later.";
+    }
+};
 
-//         })
-//     })
-// }
 
 // Admin.prototype.authenticateAdmin = async function (email, password) {
 //     console.log(email)
