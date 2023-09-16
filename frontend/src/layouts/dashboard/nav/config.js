@@ -37,8 +37,8 @@ const navConfig = [
   //   icon: icon('ic_blog'),
   // },
   {
-    title: 'login',
-    path: '/login',
+    title: 'Procurer Login',
+    path: '/procurerlogin',
     icon: icon('ic_lock'),
   },
   // {

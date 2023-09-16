@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { faker } from '@faker-js/faker';
 // @mui
@@ -5,6 +6,7 @@ import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography } from '@mui/material';
 // components
 import Iconify from '../components/iconify';
+import axios from 'axios';
 // sections
 import {
   AppTasks,
@@ -17,11 +19,51 @@ import {
   AppCurrentSubject,
   AppConversionRates,
 } from '../sections/@dashboard/app';
+const token = localStorage.getItem('token');
+import { useState } from 'react';
 
 // ----------------------------------------------------------------------
 
 export default function DashboardAppPage() {
   const theme = useTheme();
+  const [totalReports, setTotalReports] = useState(0);
+  const [totalPendingReports, setTotalPendingReports] = useState(0);
+  const [totalProcuredItemCount, setTotalProcuredItemCount] = useState(0);
+  useEffect(() => {
+    // Define your API endpoint URL
+    const totalReportUrl = 'http://192.168.3.231:4000/metrics/getTotalReports/';
+    const totalPendingReportsUrl = 'http://192.168.3.231:4000/metrics/getTotalPendingReports/';
+    const totalProcuredItemCountUrl = 'http://192.168.3.231:4000/metrics/getTotalProcuredItemCount/';
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+
+    // Fetch data from the API using Axios
+    axios.get(totalReportUrl, { headers })
+      .then((response) => {
+        // Set the retrieved data to the "items" state
+        setTotalReports(response.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+    axios.get(totalPendingReportsUrl, { headers })
+      .then((response) => {
+        // Set the retrieved data to the "items" state
+        setTotalPendingReports(response.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+    axios.get(totalProcuredItemCountUrl, { headers })
+      .then((response) => {
+        // Set the retrieved data to the "items" state
+        setTotalProcuredItemCount(response.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  }, []);
 
   return (
     <>
@@ -36,20 +78,20 @@ export default function DashboardAppPage() {
 
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Weekly Sales" total={714000} icon={'ant-design:android-filled'} />
+            <AppWidgetSummary title="Total Reports" total={totalReports} icon={'ant-design:android-filled'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="New Users" total={1352831} color="info" icon={'ant-design:apple-filled'} />
+            <AppWidgetSummary title="Total Pending Reports" total={totalPendingReports} color="info" icon={'ant-design:apple-filled'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Item Orders" total={1723315} color="warning" icon={'ant-design:windows-filled'} />
+            <AppWidgetSummary title="Total Procured Item Count" total={totalProcuredItemCount} color="warning" icon={'ant-design:windows-filled'} />
           </Grid>
 
-          <Grid item xs={12} sm={6} md={3}>
+          {/* <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary title="Bug Reports" total={234} color="error" icon={'ant-design:bug-filled'} />
-          </Grid>
+          </Grid> */}
 
           {/* <Grid item xs={12} md={6} lg={8}>
             <AppWebsiteVisits

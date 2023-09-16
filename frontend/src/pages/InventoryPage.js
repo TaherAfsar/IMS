@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Card, CardContent, CardHeader, CardMedia, Grid, Typography } from '@mui/material';
 const token = localStorage.getItem('token');
-
+import QRCode from "react-qr-code";
 function InventoryPage() {
   const [items, setItems] = useState([]);
 
@@ -35,12 +35,21 @@ function InventoryPage() {
                 title={item.name}
                 subheader={`Category: ${item.category}`}
               />
-              <CardMedia
+              <div>
+
+                <QRCode
+                  size={200}
+                  style={{ height: "auto", maxWidth: "75%", width: "75%", align: "center", background: 'white', padding: '16px', marginLeft: '40' }}
+                  value={item._id}
+                  viewBox={`0 0 256 256`}
+                />
+              </div>
+              {/* <CardMedia
                 component="img"
                 height="200"
                 image="https://via.placeholder.com/200" // Replace with your actual image URL
                 alt={item.name}
-              />
+              /> */}
               <CardContent>
                 <Typography variant="body2" color="textSecondary" component="p">
                   Location: {item.location}
