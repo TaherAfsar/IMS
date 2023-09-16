@@ -60,12 +60,12 @@ export default function ProcurerLoginPage() {
         try {
             const apiUrl = 'http://192.168.3.231:4000/user/login';
             const loginData = {
-                email: email,
-                password: password,
+                email,
+                password,
             };
 
             const response = await axios.post(apiUrl, loginData);
-            const token = response.data.token;
+            const { token } = response.data;
             localStorage.setItem('token', token);
             navigate('/dashboard', { replace: true });
         } catch (error) {
@@ -97,8 +97,8 @@ export default function ProcurerLoginPage() {
                     </StyledSection>
                 )}
 
-                <Container maxWidth="sm" >
-                    <StyledContent sx={{ justifyContent: "center" }} >
+                <Container maxWidth="sm" minHeight="0" >
+                    <StyledContent minHeight="0" sx={{ justifyContent: "center" }} >
                         <Typography variant="h4" gutterBottom >
                             Login to your account
                         </Typography>
