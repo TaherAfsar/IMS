@@ -84,10 +84,25 @@ exports.getStaffMembersList = async function (req, res) {
 
 exports.reportItemForDamage = async function (req, res) {
     let itemId = req.params.itemId;
-
+    console.log(req.body);
+    console.log(req.files);
+    console.log("taher bhai");
     let item = new Item();
     let itemData = await item.getItemById(itemId);
     req.itemId = itemId;
+    if (req.files || req.files.image) {
+
+        console.log(req.body);
+
+        // Process the file upload
+        const uploadedImage = req.files.image;
+        console.log(uploadedImage);
+        console.log(__dirname);
+        const filePath = "/Users/mit/Documents/HackXHackathon/IMS/backend" + "/uploads/" + uploadedImage.name;
+        uploadedImage.mv(filePath);
+        req.body.reportImage = filePath;
+        console.log(req.reportImage);
+    }
     let report = new Report(req.body);
     let result = await report.addReport();
 
@@ -105,3 +120,10 @@ exports.requestInventory = async function (req, res) {
 
     res.json({ message: "OK" });
 };
+
+
+exports.declineReportForProcurement = async function (req, res) {
+    let report = new Report()
+    let data = await report.declineReportForProcurement(req.params.reportId)
+    res.json({ "message": "OK" })
+}

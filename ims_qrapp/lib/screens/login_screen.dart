@@ -57,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
       });
 
       Navigator.of(context)
-          .push(MaterialPageRoute(builder: (ctx) => const HomeScreen()));
+          .push(MaterialPageRoute(builder: (ctx) => const Mypage()));
     } catch (e) {
       print(e);
       print("Error bc");
@@ -154,7 +154,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           return null;
                         },
                         style: const TextStyle(fontSize: 18),
-                        keyboardType: TextInputType.number,
+                        // keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           prefixIcon: const Icon(
                             Icons.lock,

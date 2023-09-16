@@ -5,6 +5,7 @@ const authMiddleware = require("../middlewares/auth")
 const userController = require("../controllers/userController")
 const categoryController = require("../controllers/categoryController")
 const itemController = require("../controllers/itemController")
+const procurementController = require("../controllers/procurerController")
 router.post("/admin/login", adminController.login);
 
 
@@ -44,7 +45,7 @@ router.post("/item/requestInventory/:itemId", authMiddleware.verifyToken, userCo
 
 router.get("/metrics/getTotalReports/", adminController.getTotalReports)
 router.get("/metrics/getTotalPendingReports/", adminController.getTotalPendingReports)
-router.get("/metrics/getTotalProcuredItemCount/", adminController.getTotalProcuredItemCount)
+// router.get("/metrics/getTotalProcuredItemCount/", adminController.getTotalProcuredItemCount)
 
 
 
@@ -97,4 +98,8 @@ router.get("/metrics/getTotalProcuredItemCount/", adminController.getTotalProcur
 
 
 //mit space
+
+
+router.post("/procurement/approve-procurement/:itemId", authMiddleware.verifyToken, procurementController.approveProcurement)
+router.post("/item/declineReport/:reportId", authMiddleware.verifyToken, userController.declineReportForProcurement);
 module.exports = router
