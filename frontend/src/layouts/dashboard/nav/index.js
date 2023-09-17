@@ -47,58 +47,61 @@ export default function Nav({ openNav, onCloseNav }) {
   }, [pathname]);
 
   const renderContent = (
-    <Scrollbar
-      sx={{
-        height: 1,
-        '& .simplebar-content': { backgroundColor: "#91969E", height: 1, display: 'flex', flexDirection: 'column' },
-      }}
-    >
-      <Box sx={{ px: 2.5, py: 3, display: 'inline-flex' }}>
-        <Logo />
-      </Box>
+    <Stack backgroundColor="#d1e9fc">
+      <Scrollbar
+        sx={{
+          height: 1,
 
-      <Box sx={{ mb: 5, mx: 2.5 }}>
-        <Link underline="none">
-          <StyledAccount>
-            <Avatar src={account.photoURL} alt="photoURL" />
+          '& .simplebar-content': { height: 1, display: 'flex', flexDirection: 'column' },
+        }}
+      >
+        <Box sx={{ px: 2.5, py: 3, display: 'inline-flex' }} >
+          <Logo />
+        </Box>
 
-            <Box sx={{ ml: 2 }}>
-              <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                {account.displayName}
+        <Box sx={{ mb: 5, mx: 2.5 }} >
+          <Link underline="none">
+            <StyledAccount>
+              <Avatar src={account.photoURL} alt="photoURL" />
+
+              <Box sx={{ ml: 2 }}>
+                <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
+                  {account.displayName}
+                </Typography>
+
+                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                  {account.role}
+                </Typography>
+              </Box>
+            </StyledAccount>
+          </Link>
+        </Box>
+
+        <NavSection data={navConfig} />
+
+        <Box sx={{ flexGrow: 1 }} />
+
+        <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
+          <Stack alignItems="center" spacing={3} sx={{ pt: 5, borderRadius: 2, position: 'relative' }}>
+            <Box
+              component="img"
+              src="/assets/illustrations/illustration_avatar.png"
+              sx={{ width: 100, position: 'absolute', top: -50 }}
+            />
+
+            <Box sx={{ textAlign: 'center' }}>
+              <Typography gutterBottom variant="h6">
+                Inventory Management System
               </Typography>
 
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                {account.role}
+                To maintain everything
               </Typography>
             </Box>
-          </StyledAccount>
-        </Link>
-      </Box>
-
-      <NavSection data={navConfig} />
-
-      <Box sx={{ flexGrow: 1 }} />
-
-      <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
-        <Stack alignItems="center" spacing={3} sx={{ pt: 5, borderRadius: 2, position: 'relative' }}>
-          <Box
-            component="img"
-            src="/assets/illustrations/illustration_avatar.png"
-            sx={{ width: 100, position: 'absolute', top: -50 }}
-          />
-
-          <Box sx={{ textAlign: 'center' }}>
-            <Typography gutterBottom variant="h6">
-              Inventory Management System
-            </Typography>
-
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              To maintain everything
-            </Typography>
-          </Box>
-        </Stack>
-      </Box>
-    </Scrollbar>
+          </Stack>
+        </Box>
+      </Scrollbar>
+    </Stack>
   );
 
   return (
@@ -108,6 +111,7 @@ export default function Nav({ openNav, onCloseNav }) {
         flexShrink: { lg: 0 },
         width: { lg: NAV_WIDTH },
       }}
+
     >
       {isDesktop ? (
         <Drawer

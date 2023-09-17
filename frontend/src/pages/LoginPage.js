@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 // @mui
 import { styled } from '@mui/material/styles';
@@ -7,8 +8,9 @@ import useResponsive from '../hooks/useResponsive';
 // components
 import Logo from '../components/logo';
 import Iconify from '../components/iconify';
-// sections
 import { LoginForm } from '../sections/auth/login';
+// sections
+const role = localStorage.getItem('role');
 
 // ----------------------------------------------------------------------
 
@@ -42,7 +44,11 @@ const StyledContent = styled('div')(({ theme }) => ({
 
 export default function LoginPage() {
   const mdUp = useResponsive('up', 'md');
-
+  useEffect(() => {
+    if (role === "procurer") {
+      navigator("/404")
+    }
+  }, []);
   return (
     <>
       <Helmet>

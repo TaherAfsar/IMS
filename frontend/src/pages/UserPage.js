@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
@@ -36,7 +37,7 @@ import TeacherForm from '../components/userTypeSelection/TeacherForm';
 import StaffForm from '../components/userTypeSelection/StaffForm';
 import ProcurerForm from "../components/userTypeSelection/ProcurerForm"
 
-
+const navigator = useNavigate
 
 
 const TABLE_HEAD = [
@@ -102,13 +103,16 @@ export default function UserPage() {
   const [isProcurerFormOpen, setIsProcurerFormOpen] = useState(false);
 
   const [userData, setUserData] = useState({});
-
+  const role = localStorage.getItem('role');
   const token = localStorage.getItem('token');
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
+    if (role === "procurer") {
+      navigator("/404")
+    }
     // Define your API endpoint URL
-    const apiUrl = 'http://192.168.3.231:4000/user/get-user';
+    const apiUrl = 'http://192.168.151.85:4000/user/get-user';
     const headers = {
       Authorization: `Bearer ${token}`,
     };
@@ -329,11 +333,21 @@ export default function UserPage() {
                 ))}
               </TableBody>
             </Table>
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 25]}
+              component="div"
+              count={filteredUsers.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
           </TableContainer>
+          {/* </TableContainer> */}
         </div>
 
 
-      </Container>
+      </Container >
     </>
   );
 }

@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Card, CardContent, CardHeader, CardMedia, Grid, Typography } from '@mui/material';
-const token = localStorage.getItem('token');
 import QRCode from "react-qr-code";
+import { Card, CardContent, CardHeader, CardMedia, Grid, Typography } from '@mui/material';
+
+const token = localStorage.getItem('token');
+const role = localStorage.getItem('role');
 function InventoryPage() {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
+    if (role === "procurer") {
+      navigator("/404")
+    }
     // Define your API endpoint URL
-    const apiUrl = 'http://192.168.3.231:4000/item/get-allItems';
+    const apiUrl = 'http://192.168.151.85:4000/item/get-allItems';
     const headers = {
       Authorization: `Bearer ${token}`,
     };

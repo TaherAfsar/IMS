@@ -1,8 +1,6 @@
 import { Navigate, useRoutes } from 'react-router-dom';
-// layouts
 import DashboardLayout from './layouts/dashboard';
 import SimpleLayout from './layouts/simple';
-//
 import BlogPage from './pages/BlogPage';
 import UserPage from './pages/UserPage';
 import LoginPage from './pages/LoginPage';
@@ -11,7 +9,9 @@ import Page404 from './pages/Page404';
 import InventoryPage from './pages/InventoryPage';
 import DashboardAppPage from './pages/DashboardAppPage';
 import AddItems from './pages/AddItems'
+import ViewReportsPage from './pages/ViewReportsPage'
 import AddCategory from './pages/AddCategory';
+import ProcurerHome from './pages/ProcurerHome';
 
 // ----------------------------------------------------------------------
 
@@ -37,6 +37,10 @@ export default function Router() {
       element: <ProcurerLoginPage />,
     },
     {
+      path: 'procurerhome',
+      element: <ProcurerHome />,
+    },
+    {
       element: <SimpleLayout />,
       children: [
         { element: <Navigate to="/dashboard/app" />, index: true },
@@ -55,6 +59,10 @@ export default function Router() {
     {
       path: 'addCategory',
       element: <AddCategory />
+    },
+    {
+      path: 'viewReportsPage',
+      element: <ViewReportsPage />
     }
   ]);
 

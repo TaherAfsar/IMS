@@ -1,12 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { faker } from '@faker-js/faker';
+import axios from 'axios';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography } from '@mui/material';
-// components
-import Iconify from '../components/iconify';
-import axios from 'axios';
 // sections
 import {
   AppTasks,
@@ -19,11 +16,8 @@ import {
   AppCurrentSubject,
   AppConversionRates,
 } from '../sections/@dashboard/app';
+
 const token = localStorage.getItem('token');
-import { useState } from 'react';
-
-// ----------------------------------------------------------------------
-
 export default function DashboardAppPage() {
   const theme = useTheme();
   const [totalReports, setTotalReports] = useState(0);
@@ -31,9 +25,9 @@ export default function DashboardAppPage() {
   const [totalProcuredItemCount, setTotalProcuredItemCount] = useState(0);
   useEffect(() => {
     // Define your API endpoint URL
-    const totalReportUrl = 'http://192.168.3.231:4000/metrics/getTotalReports/';
-    const totalPendingReportsUrl = 'http://192.168.3.231:4000/metrics/getTotalPendingReports/';
-    const totalProcuredItemCountUrl = 'http://192.168.3.231:4000/metrics/getTotalProcuredItemCount/';
+    const totalReportUrl = 'http://192.168.151.85:4000/metrics/getTotalReports/';
+    const totalPendingReportsUrl = 'http://192.168.151.85:4000/metrics/getTotalPendingReports/';
+    const totalProcuredItemCountUrl = 'http://192.168.151.85:4000/metrics/getTotalProcurementCount/';
     const headers = {
       Authorization: `Bearer ${token}`,
     };
@@ -42,7 +36,8 @@ export default function DashboardAppPage() {
     axios.get(totalReportUrl, { headers })
       .then((response) => {
         // Set the retrieved data to the "items" state
-        setTotalReports(response.data);
+        console.log(response.data.totalReports)
+        setTotalReports(response.data.totalReports);
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
@@ -50,7 +45,8 @@ export default function DashboardAppPage() {
     axios.get(totalPendingReportsUrl, { headers })
       .then((response) => {
         // Set the retrieved data to the "items" state
-        setTotalPendingReports(response.data);
+        console.log(response.data.totalPendingReports)
+        setTotalPendingReports(response.data.totalPendingReports);
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
@@ -58,7 +54,7 @@ export default function DashboardAppPage() {
     axios.get(totalProcuredItemCountUrl, { headers })
       .then((response) => {
         // Set the retrieved data to the "items" state
-        setTotalProcuredItemCount(response.data);
+        setTotalProcuredItemCount(response.data.getTotalProcuredItemCount);
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
@@ -71,22 +67,22 @@ export default function DashboardAppPage() {
         <title> Dashboard | CodeNando </title>
       </Helmet>
 
-      <Container maxWidth="xl">
+      <Container display="flex" maxWidth="xl">
         <Typography variant="h4" sx={{ mb: 5 }}>
           Hi, Welcome back
         </Typography>
 
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Total Reports" total={totalReports} icon={'ant-design:android-filled'} />
+          <Grid item xs={15} sm={6} md={3}>
+            <AppWidgetSummary title="Total Reports" total={totalReports} icon={'ant-design:bar-chart'} />
           </Grid>
 
-          <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Total Pending Reports" total={totalPendingReports} color="info" icon={'ant-design:apple-filled'} />
+          <Grid item xs={15} sm={6} md={3}>
+            <AppWidgetSummary title="Total Pending Reports" total={totalPendingReports} style={{ backgroundColor: '#FF6347' }} color="info" icon={'ant-design:clock-circle'} />
           </Grid>
 
-          <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Total Procured Item Count" total={totalProcuredItemCount} color="warning" icon={'ant-design:windows-filled'} />
+          <Grid item xs={15} sm={6} md={3}>
+            <AppWidgetSummary title="Total Procured Item Count" total={totalProcuredItemCount} color="warning" icon={'ant-design:unordered-list'} />
           </Grid>
 
           {/* <Grid item xs={12} sm={6} md={3}>

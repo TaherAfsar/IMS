@@ -9,6 +9,8 @@ import useResponsive from '../hooks/useResponsive';
 // components
 import Logo from '../components/logo';
 import Iconify from '../components/iconify';
+
+const role = localStorage.getItem('role');
 // sections
 
 // ----------------------------------------------------------------------
@@ -58,16 +60,17 @@ export default function ProcurerLoginPage() {
 
     const handleClick = async () => {
         try {
-            const apiUrl = 'http://192.168.3.231:4000/user/login';
+            const apiUrl = 'http://192.168.151.85:4000/user/login';
             const loginData = {
-                email: email,
-                password: password,
+                email,
+                password,
             };
 
             const response = await axios.post(apiUrl, loginData);
             const token = response.data.token;
+            localStorage.setItem('procurer', role);
             localStorage.setItem('token', token);
-            navigate('/dashboard', { replace: true });
+            navigate('/ProcurerHome', { replace: true });
         } catch (error) {
             console.error('Error:', error);
         }
@@ -104,34 +107,37 @@ export default function ProcurerLoginPage() {
                         </Typography>
 
 
+
+                        <Stack spacing={3}>
+                            {/* Add onChange handlers to update email and password state */}
+                            <TextField name="email" label="Email" style={label} onChange={handleEmailChange} value={email} />
+
+                            <TextField
+                                name="password"
+                                label="Password"
+                                type={showPassword ? 'text' : 'password'}
+                                onChange={handlePasswordChange} // Update password state
+                                value={password} // Bind value to the password state
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+                                                <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                                            </IconButton>
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+
+                        </Stack>
+                        <Stack>
+                            <br />
+                            <Button fullWidth size="large" type="submit" variant="contained" onClick={handleClick}>
+                                Login
+                            </Button>
+                        </Stack>
+
                     </StyledContent>
-                    <Stack>
-                        {/* Add onChange handlers to update email and password state */}
-                        <TextField name="email" label="Email" style={label} onChange={handleEmailChange} value={email} />
-
-                        <TextField
-                            name="password"
-                            label="Password"
-                            type={showPassword ? 'text' : 'password'}
-                            onChange={handlePasswordChange} // Update password state
-                            value={password} // Bind value to the password state
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                                            <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                                        </IconButton>
-                                    </InputAdornment>
-                                ),
-                            }}
-                        />
-
-                        <Button fullWidth size="large" type="submit" variant="contained" onClick={handleClick}>
-                            Login
-                        </Button>
-                    </Stack>
-
-
                 </Container>
             </StyledRoot >
         </>

@@ -44,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
         isloading = true;
       });
       var res = await http.post(
-          Uri.parse("http://192.168.3.231:4000/user/login/"),
+          Uri.parse("http://192.168.151.85:4000/user/login/"),
           body: {"email": email, "password": password});
       if (res.statusCode >= 300) {
         throw Error();

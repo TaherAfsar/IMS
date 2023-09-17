@@ -22,6 +22,11 @@ const navConfig = [
     icon: icon('ic_cart'),
   },
   {
+    title: 'View Reports Page',
+    path: '/viewReportsPage',
+    icon: icon('ic_lock'),
+  },
+  {
     title: 'Add Inventory Items',
     path: '/AddItems',
     icon: icon('ic_cart'),
@@ -39,6 +44,11 @@ const navConfig = [
   {
     title: 'Procurer Login',
     path: '/procurerlogin',
+    icon: icon('ic_lock'),
+  },
+  {
+    title: 'Procurer Home',
+    path: '/procurerhome',
     icon: icon('ic_lock'),
   },
   // {

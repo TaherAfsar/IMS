@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 // @mui
 import { Grid, Button, Container, Stack, Typography } from '@mui/material';
@@ -14,10 +15,15 @@ const SORT_OPTIONS = [
   { value: 'popular', label: 'Popular' },
   { value: 'oldest', label: 'Oldest' },
 ];
-
+const role = localStorage.getItem('role');
 // ----------------------------------------------------------------------
 
 export default function BlogPage() {
+  useEffect(() => {
+    if (role === "procurer") {
+      navigator("/404")
+    }
+  }, []);
   return (
     <>
       <Helmet>

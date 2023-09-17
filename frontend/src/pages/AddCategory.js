@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
     TextField,
     Button,
-    makeStyles,
-    Snackbar, // Import Snackbar component from MUI
+    Snackbar,
 } from '@mui/material';
-import Nav from 'src/layouts/dashboard/nav/index';
+import Nav from '../layouts/dashboard/nav/index';
+
 const today = new Date();
 const month = today.getMonth() + 1;
 const year = today.getFullYear();
 const date = today.getDate();
 const currentDate = `${month} + "/" + ${date} + "/" + ${year}`;
 const token = localStorage.getItem('token');
+const role = localStorage.getItem('role');
 console.log(token)
 function AddCategory() {
     const inputStyle = {
@@ -20,8 +21,11 @@ function AddCategory() {
         width: "500px"
     }
     const form = {
-        marginLeft: "500px",
-        marginTop: "300px"
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100vh', // Center vertically within the viewport
     }
     console.log(token)
     const [formData, setFormData] = useState({
@@ -31,6 +35,11 @@ function AddCategory() {
 
     const [responseMessage, setResponseMessage] = useState('');
     const [openSnackbar, setOpenSnackbar] = useState(false);
+    useEffect(() => {
+        if (role === "procurer") {
+            navigator("/404")
+        }
+    }, []);
     const handleChange = (event) => {
         const { name, value } = event.target;
         setFormData({
@@ -50,7 +59,7 @@ function AddCategory() {
             const headers = {
                 Authorization: `Bearer ${token}`,
             };
-            const response = await axios.post('http://192.168.3.231:4000/category/create-category', formData, { headers });
+            const response = await axios.post('http://192.168.151.85:4000/category/create-category', formData, { headers });
             console.log(formData)
             if (response.data.message === 'item added') {
                 setResponseMessage('Item added successfully');

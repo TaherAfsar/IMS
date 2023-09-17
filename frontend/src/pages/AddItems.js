@@ -1,40 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
   TextField,
   Button,
   makeStyles,
-  Snackbar, // Import Snackbar component from MUI
+  Snackbar,
+  Card,
+  FormControl, // Import FormControl and Select from MUI
+  Select,
+  MenuItem,
+  FormLabel,
 } from '@mui/material';
-import Nav from 'src/layouts/dashboard/nav/index';
+import Nav from '../layouts/dashboard/nav/index';
+
 const today = new Date();
 const month = today.getMonth() + 1;
 const year = today.getFullYear();
 const date = today.getDate();
 const currentDate = `${month} + "/" + ${date} + "/" + ${year}`;
 const token = localStorage.getItem('token');
-console.log(token)
+const role = localStorage.getItem('role');
+
 function AddItems() {
   const inputStyle = {
-    marginTop: "30px",
-    width: "500px"
-  }
+    marginTop: '30px',
+    width: '500px',
+  };
+
   const form = {
-    marginLeft: "500px",
-    marginTop: "200px"
-  }
-  console.log(token)
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100vh', // Center vertically within the viewport
+  };
+
   const [formData, setFormData] = useState({
     name: '',
-    category: '',
+    category: '', // Add category field to your form data
     expirationDate: '',
     location: '',
     status: '',
     entryDate: currentDate,
   });
 
+  const [categories, setCategories] = useState([]); // State to hold categories
   const [responseMessage, setResponseMessage] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData({
@@ -50,14 +63,16 @@ function AddItems() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      console.log(formData)
       const headers = {
         Authorization: `Bearer ${token}`,
       };
-      const response = await axios.post('http://192.168.3.231:4000/item/add-item', formData, { headers });
-      console.log(formData)
+      const response = await axios.post(
+        'http://192.168.151.85:4000/item/add-item',
+        formData,
+        { headers }
+      );
       if (response.data.message === 'item added') {
-        setResponseMessage('Iytem added successfully');
+        setResponseMessage('Item added successfully');
         setOpenSnackbar(true);
       }
     } catch (error) {
@@ -65,87 +80,115 @@ function AddItems() {
     }
   };
 
+  useEffect(() => {
+    const headers = {
+      Authorization: `Bearer ${token}`
+    }
+    if (role === "procurer") {
+      navigator('/404');
+    }
+    // Fetch categories from the API
+    axios
+      .get('http://192.168.151.85:4000/category/view-category-list', { headers })
+      .then((response) => {
+        // Extract category types from the API response and set them in the state
+        const categoryTypes = response.data.data.map((category) => category.categoryType);
+        setCategories(categoryTypes);
+      })
+      .catch((error) => {
+        console.error('Error fetching categories:', error);
+      });
+  }, []);
+
   return (
     <div>
-      < Nav />
-      <form onSubmit={handleSubmit} style={form}>
-        <h1>
-          Add Items
-        </h1>
+      <Card>
         <div>
-          <TextField
-            style={inputStyle}
-            label="Name"
-            name="name"
-            variant="outlined"
-            value={formData.name}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <TextField
-            style={inputStyle}
-            label="category"
-            name="category"
-            variant="outlined"
-            value={formData.category}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <TextField
-            style={inputStyle}
-            label=""
-            name="expirationDate"
-            variant="outlined"
-            value={formData.expirationDate}
-            onChange={handleChange}
-            type='date'
-          />
-        </div>
-        <div>
-          <TextField
-            style={inputStyle}
-            label="location"
-            name="location"
-            variant="outlined"
-            value={formData.location}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <TextField
-            style={inputStyle}
-            label="status"
-            name="status"
-            variant="outlined"
-            value={formData.status}
-            onChange={handleChange}
-          />
-        </div>
+          <Nav />
+          <form onSubmit={handleSubmit} style={form}>
+            <h1>Add Items</h1>
+            <div>
+              <TextField
+                style={inputStyle}
+                label="Name"
+                name="name"
+                variant="outlined"
+                value={formData.name}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <FormControl variant="outlined" style={inputStyle}>
+                <FormLabel htmlFor="category">Category</FormLabel>
+                <Select
+                  labelId="category"
+                  id="category"
+                  name="category"
+                  value={formData.category}
+                  onChange={handleChange}
+                >
+                  <MenuItem value="">Select a category</MenuItem>
+                  {categories.map((category) => (
+                    <MenuItem key={category} value={category}>
+                      {category}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </div>
+            <div>
+              <TextField
+                style={inputStyle}
 
-        <Button
-          style={inputStyle}
-          type="submit"
-          variant="contained"
-          color="primary"
-        >
-          Submit
-        </Button>
+                name="expirationDate"
+                variant="outlined"
+                value={formData.expirationDate}
+                onChange={handleChange}
+                type="date"
+              />
+            </div>
+            <div>
+              <TextField
+                style={inputStyle}
+                label="Location"
+                name="location"
+                variant="outlined"
+                value={formData.location}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <TextField
+                style={inputStyle}
+                label="Status"
+                name="status"
+                variant="outlined"
+                value={formData.status}
+                onChange={handleChange}
+              />
+            </div>
 
+            <Button
+              style={inputStyle}
+              type="submit"
+              variant="contained"
+              color="primary"
+            >
+              Submit
+            </Button>
+          </form>
 
-      </form>
-
-      {/* Snackbar to display the response message */}
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={6000} // Adjust the duration as needed
-        onClose={handleSnackbarClose}
-        message={responseMessage}
-      />
+          {/* Snackbar to display the response message */}
+          <Snackbar
+            open={openSnackbar}
+            autoHideDuration={6000} // Adjust the duration as needed
+            onClose={handleSnackbarClose}
+            message={responseMessage}
+          />
+        </div>
+      </Card>
     </div>
   );
 }
 
 export default AddItems;
-

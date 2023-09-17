@@ -17,15 +17,16 @@ export default function LoginForm() {
 
   const handleClick = async () => {
     try {
-      const apiUrl = 'http://192.168.3.231:4000/admin/login';
+      const apiUrl = 'http://192.168.151.85:4000/admin/login';
       const loginData = {
-        email: email,
-        password: password,
+        email,
+        password,
       };
 
       const response = await axios.post(apiUrl, loginData);
       const token = response.data.token;
       localStorage.setItem('token', token);
+      localStorage.setItem('role', "admin");
       navigate('/dashboard', { replace: true });
     } catch (error) {
       console.error('Error:', error);
@@ -57,9 +58,9 @@ export default function LoginForm() {
       </Stack>
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
-        <Link variant="subtitle2" underline="hover">
+        {/* <Link variant="subtitle2" underline="hover">
           Forgot password?
-        </Link>
+        </Link> */}
       </Stack>
 
       <LoadingButton fullWidth size="large" type="submit" variant="contained" onClick={handleClick}>
