@@ -4,6 +4,8 @@ const MongoStore = require('connect-mongo')
 const flash = require('connect-flash')
 const router = require("./routers/router")
 // const fileUpload = require('express-fileupload')
+const fileUpload = require("express-fileupload");
+
 const cors = require("cors")
 const app = express()
 
@@ -13,6 +15,7 @@ const app = express()
 app.use(express.urlencoded({ extended: false }))
 //just a bolierplate code, tells our express server to add the user submitted data to request object.
 app.use(express.json())
+app.use(fileUpload())
 let sessionOptions = session({
     secret: "JavaScript is sooooooooo coool",
     store: MongoStore.create({ client: require('./db'), mongoUrl: process.env.CONNECTIONSTRING, collectionName: "sessions" }),
@@ -24,7 +27,7 @@ let sessionOptions = session({
 app.use(sessionOptions)
 app.use(flash())
 app.use(cors())
-
+app.use(express.static('uploads'));
 app.use(express.static('public'))
 //We are telling our express server to make the folder accessible.
 //in public folder there are all the files who that we want to show all the visitors of our app. (css, browser.js, etc)

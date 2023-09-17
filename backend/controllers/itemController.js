@@ -14,12 +14,13 @@ exports.addItem = async (req, res) => {
 
 exports.getAllItems = async (req, res) => {
     // console.log(re);
-    let item  = new Item()
+    let item = new Item()
     let data = await item.getAllItems()
     res.json(data)
 }
 
 exports.getItemById = async (req, res) => {
+    console.log("hit");
     let item = new Item()
     let data = await item.getItemById(req.params.id)
     res.json(data)

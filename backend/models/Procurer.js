@@ -15,12 +15,17 @@ Procurer.prototype.cleanUp = function () {
         itemId: this.data.itemId,
         totalQuantityProcured: this.data.totalQuantityProcured,
         totalAmount: this.data.totalAmount,
+        procurementStatus: this.data.procurementStatus,
         createdDate: new Date()
     }
 
 }
 
-Procurer.prototype.createProcurement = function () {
+Procurer.prototype.createProcurement = async function (id) {
+    this.cleanUp()
+    this.data.itemId = id
+    await procurersCollection.insertOne(this.data)
+    return true
 
 }
 Procurer.prototype.getTotalProcuments = async function () {
