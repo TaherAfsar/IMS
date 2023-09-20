@@ -46,7 +46,7 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff5ACE86),
+      backgroundColor: const Color(0xff00adb5),
       body: ScaleTransition(
         scale: animation,
         child: Center(
@@ -56,7 +56,7 @@ class _SplashScreenState extends State<SplashScreen>
             child: ClipOval(
               clipBehavior: Clip.hardEdge,
               child: Image.asset(
-                "assets/images/inventory.png",
+                "assets/real_estate.png",
                 height: 200,
                 width: 180,
                 fit: BoxFit.fill,

@@ -4,6 +4,7 @@ dotenv.config()
 const Admin = require("../models/Admin")
 const Report = require("../models/Report")
 const jwt = require("jsonwebtoken")
+const Procurer = require('../models/Procurer')
 exports.login = function (req, res) {
     console.log(req.body)
     let admin = new Admin(req.body)
@@ -39,21 +40,21 @@ exports.createAdmin = async function (req, res) {
 exports.getTotalReports = async (req, res) => {
     let admin = new Admin()
     let report = new Report()
-    let count = report.getTotalReports()
+    let count = await report.getTotalReports()
 
     res.json({ "totalReports": count })
 }
 exports.getTotalPendingReports = async (req, res) => {
     let admin = new Admin()
     let report = new Report()
-    let count = report.getTotalPendingReports()
+    let count = await report.getTotalPendingReports()
 
     res.json({ "totalPendingReports": count })
 }
-exports.getTotalProcuredItemCount = async (req, res) => {
-    let admin = new Admin()
-    let report = new Report()
-    let count = report.getTotalProcurements()
+exports.getTotalProcurementCount = async (req, res) => {
+
+    let procurement = new Procurer()
+    let count = await procurement.getTotalProcurements()
 
     res.json({ "getTotalProcuredItemCount": count })
 }

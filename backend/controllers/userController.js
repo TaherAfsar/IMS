@@ -5,6 +5,10 @@ const Item = require("../models/Item");
 const jwt = require("jsonwebtoken");
 const Report = require("../models/Report");
 const Inventory = require("../models/Inventory");
+// const { sendMsg } = require('../socket-utilty')
+
+// import { io } from "../socket-imp";
+const io = require("../db");
 // exports.login = function (req, res) {
 //     console.log(req.body)
 //     let admin = new Admin(req.body)
@@ -100,12 +104,13 @@ exports.reportItemForDamage = async function (req, res) {
         console.log(__dirname);
         const filePath = "/Users/mit/Documents/HackXHackathon/IMS/backend" + "/uploads/" + uploadedImage.name;
         uploadedImage.mv(filePath);
-        req.body.reportImage = filePath;
+        req.body.reportImage = uploadedImage.name;
         console.log(req.reportImage);
     }
     let report = new Report(req.body);
     let result = await report.addReport();
-
+    // io.emit('chatMessage', result);
+    // sendMsg(result)
     res.json({ message: "OK" });
 };
 exports.requestInventory = async function (req, res) {
@@ -126,4 +131,10 @@ exports.declineReportForProcurement = async function (req, res) {
     let report = new Report()
     let data = await report.declineReportForProcurement(req.params.reportId)
     res.json({ "message": "OK" })
+}
+
+exports.getAllReports = async (req, res) => {
+    let report = new Report()
+    let data = await report.getAllReports()
+    res.json(data)
 }

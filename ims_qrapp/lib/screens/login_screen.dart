@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:ims_qrapp/screens/home_screen.dart';
+import 'package:ims_qrapp/screens/mainHomeScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -57,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
       });
 
       Navigator.of(context)
-          .push(MaterialPageRoute(builder: (ctx) => const Mypage()));
+          .push(MaterialPageRoute(builder: (ctx) => const MyWidget()));
     } catch (e) {
       print(e);
       print("Error bc");

@@ -6,6 +6,9 @@ const userController = require("../controllers/userController")
 const categoryController = require("../controllers/categoryController")
 const itemController = require("../controllers/itemController")
 const procurementController = require("../controllers/procurerController")
+
+
+
 router.post("/admin/login", adminController.login);
 
 
@@ -37,7 +40,9 @@ router.post("/item/editItem/:id", authMiddleware.verifyToken, itemController.edi
 
 
 //procurement
-router.post("/item/reportItemForDamage/:itemId", authMiddleware.verifyToken, userController.reportItemForDamage);
+router.post("/item/reportItemForDamage/:itemId", authMiddleware.verifyToken, async (io, req, res) => {
+    await userController.reportItemForDamage(io, req, res)
+});
 router.post("/item/requestInventory/:itemId", authMiddleware.verifyToken, userController.requestInventory);
 
 
@@ -45,7 +50,7 @@ router.post("/item/requestInventory/:itemId", authMiddleware.verifyToken, userCo
 
 router.get("/metrics/getTotalReports/", adminController.getTotalReports)
 router.get("/metrics/getTotalPendingReports/", adminController.getTotalPendingReports)
-// router.get("/metrics/getTotalProcuredItemCount/", adminController.getTotalProcuredItemCount)
+router.get("/metrics/getTotalProcurementCount/", adminController.getTotalProcurementCount)
 
 
 
@@ -101,5 +106,9 @@ router.get("/metrics/getTotalPendingReports/", adminController.getTotalPendingRe
 
 
 router.post("/procurement/approve-procurement/:itemId", authMiddleware.verifyToken, procurementController.approveProcurement)
+router.get("/report/getAllReports/", userController.getAllReports)
+router.post("/procurement/acquiredStatus/:id", authMiddleware.verifyToken, procurementController.acquiredStatus)
 router.post("/item/declineReport/:reportId", authMiddleware.verifyToken, userController.declineReportForProcurement);
+
+router.get("/procurer/getAllprocurers", authMiddleware.verifyToken, procurementController.getAllProcurers)
 module.exports = router

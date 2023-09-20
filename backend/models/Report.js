@@ -13,6 +13,7 @@ let Report = function (data) {
 Report.prototype.cleanUp = function () {
     this.data = {
         itemId: this.data.itemId,
+        itemName: this.data.itemName,
         reportTitle: this.data.reportTitle,
         reportDetails: this.data.reportDetails,
         reportStatus: this.data.reportStatus,
@@ -27,8 +28,12 @@ Report.prototype.addReport = async function () {
     this.cleanUp()
     console.log(this.data);
 
+    this.data.reportStatus = "pending";
+
     let data = await reportsCollection.insertOne(this.data)
-    return true
+
+    let newReport = await reportsCollection.findOne({ _id: data.insertedId })
+    return newReport
 }
 
 Report.prototype.getTotalReports = async function () {
@@ -36,7 +41,7 @@ Report.prototype.getTotalReports = async function () {
     return reportsCount.length;
 }
 Report.prototype.getTotalPendingReports = async function () {
-    let reportsCount = await reportsCollection.find({ role: "pending" }).toArray()
+    let reportsCount = await reportsCollection.find({ reportStatus: "pending" }).toArray()
     return reportsCount.length;
 }
 // Report.prototype.getTotalPendingReports = async function () {
@@ -48,5 +53,10 @@ Report.prototype.declineReportForProcurement = async function (id) {
     let data = await reportsCollection.findOneAndUpdate({ _id: new ObjectId(id) }, { $set: { reportStatus: "declined" } })
     console.log(data);
     return data;
+}
+
+Report.prototype.getAllReports = async function () {
+    let data = await reportsCollection.find({}).toArray()
+    return data
 }
 module.exports = Report;

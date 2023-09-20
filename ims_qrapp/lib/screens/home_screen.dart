@@ -36,7 +36,11 @@ class _Mypage extends State<Mypage> {
   Widget build(context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: const Color(0xff00adb5),
       appBar: AppBar(
+        backgroundColor: const Color.fromARGB(
+            255, 108, 184, 247), // Background color of the app bar
+        elevation: 0,
         title: const Text("Scan QR"),
         leading: IconButton(
           icon: const Icon(Icons.back_hand),
@@ -49,7 +53,7 @@ class _Mypage extends State<Mypage> {
           )
         ],
       ),
-      backgroundColor: Theme.of(context).colorScheme.tertiary,
+      // backgroundColor: Theme.of(context).colorScheme.tertiary,
       body: SafeArea(
           child: Column(
         children: [

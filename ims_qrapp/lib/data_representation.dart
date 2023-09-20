@@ -30,6 +30,10 @@ class _DataRepresentation extends State<DataRepresentation> {
   File? _image;
 
   bool isLoading = false;
+
+  String title = "";
+  String details = "";
+  String itemName = "Coke";
   bool isLoading2 = false;
 
   @override
@@ -50,7 +54,8 @@ class _DataRepresentation extends State<DataRepresentation> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var token = prefs.getString("token");
       var res = await http.get(
-          Uri.parse("http://192.168.3.231:4000/item/get-itemById/${widget.id}"),
+          Uri.parse(
+              "http://192.168.151.85:4000/item/get-itemById/${widget.id}"),
           headers: {"Authorization": "Bearer $token"});
 
       if (res.statusCode >= 300) {
@@ -76,7 +81,7 @@ class _DataRepresentation extends State<DataRepresentation> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var token = prefs.getString("token");
       var uri = Uri.parse(
-          "http://192.168.3.231:4000/item/reportItemForDamage/${widget.id}");
+          "http://192.168.151.85:4000/item/reportItemForDamage/${widget.id}");
 
       var request = http.MultipartRequest('POST', uri);
       request.files.add(await http.MultipartFile.fromPath(
@@ -109,6 +114,7 @@ class _DataRepresentation extends State<DataRepresentation> {
   @override
   Widget build(context) {
     void putData() async {
+      formKey.currentState!.save();
       try {
         setState(() {
           isLoading2 = true;
@@ -117,7 +123,7 @@ class _DataRepresentation extends State<DataRepresentation> {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var token = prefs.getString("token");
         var uri = Uri.parse(
-            "http://192.168.3.231:4000/item/reportItemForDamage/${widget.id}");
+            "http://192.168.151.85:4000/item/reportItemForDamage/${widget.id}");
 
         var request = http.MultipartRequest('POST', uri);
         request.files.add(await http.MultipartFile.fromPath(
@@ -125,8 +131,10 @@ class _DataRepresentation extends State<DataRepresentation> {
           _image!.path,
         ));
         request.headers['Authorization'] = "Bearer $token";
-        request.fields['reportTitle'] = "ddfthyggy";
-        request.fields['reportDetails'] = "ddfthyggy";
+        request.fields['itemId'] = widget.id;
+        request.fields['reportTitle'] = title;
+        request.fields['reportDetails'] = details;
+        request.fields['itemName'] = itemName;
         request.fields['reportStartHours'] = "ddfthyggy";
 
         print(request);
@@ -143,12 +151,14 @@ class _DataRepresentation extends State<DataRepresentation> {
             isLoading2 = false;
           });
         }
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (c) => const ThankYouPage(
-                      title: "Thank you",
-                    )));
+        if (context.mounted) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (c) => const ThankYouPage(
+                        title: "Thank you",
+                      )));
+        }
       } catch (e) {}
     }
 
@@ -300,7 +310,12 @@ class _DataRepresentation extends State<DataRepresentation> {
                                                           ),
                                                           TextFormField(
                                                             onSaved:
-                                                                (newValue) {},
+                                                                (newValue) {
+                                                              setState(() {
+                                                                title =
+                                                                    newValue!;
+                                                              });
+                                                            },
                                                             decoration:
                                                                 InputDecoration(
                                                                     border:
@@ -336,7 +351,12 @@ class _DataRepresentation extends State<DataRepresentation> {
                                                           TextFormField(
                                                             maxLines: 4,
                                                             onSaved:
-                                                                (newValue) {},
+                                                                (newValue) {
+                                                              setState(() {
+                                                                details =
+                                                                    newValue!;
+                                                              });
+                                                            },
                                                             decoration:
                                                                 InputDecoration(
                                                                     border:

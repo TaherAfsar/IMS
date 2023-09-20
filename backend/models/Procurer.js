@@ -32,5 +32,18 @@ Procurer.prototype.getTotalProcuments = async function () {
     let data = await procurersCollection.find({}).toArray()
     return data.length
 }
+Procurer.prototype.getAllProcurers = async function () {
+    let data = await procurersCollection.find({}).toArray()
+    return data
+}
 
+Procurer.prototype.acquiredStatus = async function (id) {
+    let data = await procurersCollection.findOneAndUpdate({ _id: new ObjectId(id) }, { $set: { procurementStatus: "procured" } })
+    return data
+}
+
+Procurer.prototype.getTotalProcurements = async function () {
+    let data = await procurersCollection.find({}).toArray()
+    return data.length
+}
 module.exports = Procurer;

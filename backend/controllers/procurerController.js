@@ -14,3 +14,15 @@ exports.approveProcurement = async function (req, res) {
     let data = procurer.createProcurement(req.params.id)
     res.json({ "message": "OK" })
 }
+
+exports.getAllProcurers = async (req, res) => {
+    let procurers = new Procurer()
+    let data = await procurers.getAllProcurers()
+    res.json(data)
+}
+
+exports.acquiredStatus = async (req, res) => {
+    let procurers = new Procurer()
+    let data = await procurers.acquiredStatus(req.params.id)
+    res.json({ "message": "OK" })
+}
