@@ -67,12 +67,8 @@ export default function ProcurerLoginPage() {
             };
 
             const response = await axios.post(apiUrl, loginData);
-<<<<<<< HEAD
             const token = response.data.token;
             localStorage.setItem('procurer', role);
-=======
-            const { token } = response.data;
->>>>>>> c085a449a664ff2a0b676799f5501420f102d2e4
             localStorage.setItem('token', token);
             navigate('/ProcurerHome', { replace: true });
         } catch (error) {
